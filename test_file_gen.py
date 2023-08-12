@@ -30,11 +30,11 @@ def create_test_file() -> None:
     Creates a test file in a random location with a random topic.
     """
     test_time = datetime.now().strftime("%Y/%M/%D/%H/%m")
-    path = Path(f"{get_random_location()}/{test_time}")
+    path = Path(f"test-files/{get_random_location()}/{test_time}")
 
     # We need to ensure that the path exists before we can create the file, however we don't want to create a
     # directory for the minutes, so we cut that off.
-    ensure_path_exists(path[:-2])
+    ensure_path_exists(path.parent)
 
     with open(f"{path}-{get_random_topic()}.dat", "w") as f:
         f.write("This is a test file")

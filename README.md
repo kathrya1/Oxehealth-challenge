@@ -52,3 +52,22 @@ kat@Katherines-MacBook-Pro Repos % aws s3 ls
   ready to create the requested script.
 - This script will now run in the background using tmux while I test and work from here.
 - My initial thoughts are to use boto3, and I'll see how I get on!
+
+### Progress 3
+
+- The script is now written (upload-to-s3.py), though I'd remove the .py if I was using cron to automate it. The
+  script is tested to work using manual local testing again my locally generated files and seems to be doing a good job.
+- The script has not been configured to run automatically, or tested as part of systemd , but should have no issues
+  being run in this way.
+- My plan is to now polish the script, and consider final improvements that may be worth considering:
+    - Handling different formats of directory (full paths vs relative paths, and how this effects uploaded names)
+    - Handling files that are part way through being written (as part of error handling)
+    - Some unit testing, that would form part of the CI/CD pipeline, were I doing this in a production environment.
+
+### Final requirements
+
+- Each Linux machine would need to have local credentials, as suggested
+- Each machine would need to have python installed, and present at the default location
+- Each python installation would require boto3
+- (This can be done with fewer requirements, however it didn't appear to need fewer requirements and is cleaner this
+  way)
