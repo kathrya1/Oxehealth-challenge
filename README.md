@@ -9,7 +9,7 @@ expected to take no more than 4 hours.
 
 Initial thoughts, and assumptions:
 
-- The challenge says that this program should run on any variant of linux, but that you may also se any language of
+- The challenge says that this program should run on any variant of linux, but that you may also use any language of
   your choice. This is a point I would discuss further, however due to time constraints, I'm going to assume that
   means we can discount out of date linux variants, and just use python3.
 - The program looks like the easiest part of this to write, with the meta-tooling and the testing structure being
@@ -61,13 +61,51 @@ kat@Katherines-MacBook-Pro Repos % aws s3 ls
   being run in this way.
 - My plan is to now polish the script, and consider final improvements that may be worth considering:
     - Handling different formats of directory (full paths vs relative paths, and how this effects uploaded names)
-    - Handling files that are part way through being written (as part of error handling)
+    - Handling files that are a part way through being written (as part of error handling)
     - Some unit testing, that would form part of the CI/CD pipeline, were I doing this in a production environment.
 
-### Final requirements
+### progress 4
+
+- From here I would write a test to ensure I don't upload/delete a file that is less than 30 seconds old, to match
+  this requirement:
+
+```
+The files are being written by another process which is generating the data, and files
+will usually be finished writing within a few seconds of the timestamp of the data
+```
+
+- I would write a CI test that runs the file creator once, then runs the upload service and ensures that the file is
+  present in the bucket, and deleted locally. This test would be a requirement for any branch to merge going forwards.
+- Finally, I would consider handling other formats of path (full vs relative).
+- It is unclear if a crontab/systemd file is expected to be included in this project, however they are simple enough
+  to add if required.
+
+### Final requirements for part 1
 
 - Each Linux machine would need to have local credentials, as suggested
 - Each machine would need to have python installed, and present at the default location
 - Each python installation would require boto3
 - (This can be done with fewer requirements, however it didn't appear to need fewer requirements and is cleaner this
   way)
+
+# Part 2
+
+To turn this into a system critical service, I would start by making the above improvements, including designing
+additional (automated) tests for the operating environment (e.g. ensuring that the systemd service file works
+correctly), and I would make
+them a requirement for any merge to main/deployment to production.
+
+I would continue by:
+
+- Integrating the logging with the existing logging infrastructure (especially instead of print statements)
+- Utilise the existing monitoring infrastructure to ensure that the service is running correctly, and monitor for
+  any critical errors
+
+If there is no existing infrastructure, I would consider:
+
+- Swapping the logging to use a logging service, such as datadog.
+- Add a monitoring service, such as datadog, to each server to monitor the systemd service, and ensure it runs
+  without errors, on schedule.
+- This monitoring would report out to the 3rd party server, where we can have monitoring and alerting configured as
+  necessary. It is not the only such service, but is one I have used in the past. (I would also consider cloudwatch
+  for example.)
