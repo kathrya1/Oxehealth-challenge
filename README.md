@@ -1,2 +1,30 @@
 # Oxehealth-challenge
 A repo to store information and progress around the Oxehealth platform engineer challenge
+
+
+## Challenge 1
+The first challenge is to write a program that will upload files from a local directory to an AWS S3 bucket. This is 
+expected to take no more than 4 hours. 
+
+Initial thoughts, and assumptions:
+- The challenge says that this program should run on any variant of linux, but that you may also se any language of 
+  your choice. This is a point I would discuss further, however due to time constraints, I'm going to assume that 
+  means we can discount out of date linux variants, and just use python3.
+- The program looks like the easiest part of this to write, with the meta-tooling and the testing structure being 
+  the most complicated/time-consuming piece. Given that I don't have a personal sandbox AWS account at the moment, 
+  that may end up taking as long as the script itself.
+- I would ask further questions about the nature of the files being uploaded, and will make certain assumptions as 
+  follows:
+  - Will any of the files be large? - I will be assuming no
+  - How frequently will the files be uploaded/how often is the timer expecting to run (every minute, hourly etc.) - 
+    I will be assuming every 10 minutes
+  - Related to the above, how often are new files generated? - I will be testing on a basis of a new file every minute
+  - How large/clean is the destination S3 bucket? - I will be assuming that we cannot scan the bucket, to check if a 
+    file has already been uploaded. (I also believe that may be why we are deleting the files after upload)
+
+### The Plan
+From this I then plan to:
+- Create an AWS account, and an S3 bucket
+- Create a script that will generate these files, at random, approximately minutely intervals,
+- Create the program that has actually been requested
+- Using the tooling and credentials created earlier, verify that the program works as intended
