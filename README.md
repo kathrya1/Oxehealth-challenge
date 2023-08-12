@@ -28,3 +28,14 @@ From this I then plan to:
 - Create a script that will generate these files, at random, approximately minutely intervals,
 - Create the program that has actually been requested
 - Using the tooling and credentials created earlier, verify that the program works as intended
+
+### Progress
+- Turns out I did have an AWS account lying around. Thank you password managers, and a bucket is trivial to create, 
+  so kathtestbucket now exists. Next step is to configure local environment access to the bucket. For this it is 
+  worth highlighting my developement machine is a mac, which I believe is Linux enough for the purposes of this, so 
+  won't be developing in docker.
+- And a few moments later:
+```
+kat@Katherines-MacBook-Pro Repos % aws s3 ls
+2023-08-12 10:16:34 kathtestbucket
+```
